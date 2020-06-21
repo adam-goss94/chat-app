@@ -4,6 +4,8 @@ const messagesList = document.getElementById('messages-list');
 const addMessageForm = document.getElementById('add-messages-form');
 const userNameInput = document.getElementById('username');
 const messageContentInput = document.getElementById('message-content');
+
+const socket = io();
 let userName = '';
 
 loginForm.addEventListener('submit', (event) => {
@@ -27,17 +29,21 @@ const login = () => {
   }
 };
 
-const sendMessage = () => {
-  event.preventDefault();
+const sendMessage = e => {
+  e.preventDefault();
 
-  if (messageContentInput.value == '') {
-    alert('Message field cannot be empty!')
+  let messageContent = messageContentInput.value;
+
+  if(!messageContent.length) {
+    alert('You have to type something!');
   }
   else {
-    addMessage(userName, messageContentInput.value);
+    addMessage(userName, messageContent);
+    socket.emit('message', { author: userName, content: messageContent })
     messageContentInput.value = '';
   }
-};
+
+}
 
 const addMessage = (author, content) => {
   const message = document.createElement('li');
