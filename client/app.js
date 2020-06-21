@@ -29,6 +29,7 @@ const login = () => {
     loginForm.classList.remove('show');
     messagesSection.classList.add('show');
   }
+  socket.emit('join', userName);
 };
 
 const sendMessage = () => {
@@ -50,6 +51,7 @@ const addMessage = (author, content) => {
   const message = document.createElement('li');
   message.classList.add('message', 'message--received');
   if (author == userName) message.classList.add('message--self');
+  if (author == 'ChatBot') message.classList.add('chatBot');
   message.innerHTML = `
     <h3 class="message__author">${userName === author ? 'You' : author }</h3>
     <div class="message__content">
