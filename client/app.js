@@ -6,6 +6,8 @@ const userNameInput = document.getElementById('username');
 const messageContentInput = document.getElementById('message-content');
 
 const socket = io();
+socket.on('message', ({ author, content }) => addMessage(author, content))
+
 let userName = '';
 
 loginForm.addEventListener('submit', (event) => {
@@ -29,8 +31,8 @@ const login = () => {
   }
 };
 
-const sendMessage = e => {
-  e.preventDefault();
+const sendMessage = () => {
+  event.preventDefault();
 
   let messageContent = messageContentInput.value;
 
@@ -42,8 +44,7 @@ const sendMessage = e => {
     socket.emit('message', { author: userName, content: messageContent })
     messageContentInput.value = '';
   }
-
-}
+};
 
 const addMessage = (author, content) => {
   const message = document.createElement('li');
